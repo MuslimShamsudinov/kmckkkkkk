@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kmckkkkkk/pages/homeVieu.dart';
+import 'package:kmckkkkkk/pages/naimation_page.dart';
 
 void main(List<String> args) {
   runApp(weater());
@@ -13,7 +14,8 @@ class weater extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
-      home: homeVieu(),
+      // home: HomeVieu(),
+      home: AnimationPage(),
     );
   }
 }

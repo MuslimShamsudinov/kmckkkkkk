@@ -1,26 +1,38 @@
+import 'dart:developer';
+
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:kmckkkkkk/pages/second_page.dart';
 
-class Sear extends StatefulWidget {
-  const SearchView({super.key});
+class HomeVieu extends StatefulWidget {
+  const HomeVieu({Key? key}) : super(key: key);
 
   @override
-  _SearchViewState createState() => _SearchViewState();
+  _HomeVieuState createState() => _HomeVieuState();
 }
-class _SearchViewState extends State<SearchView> {
-  Future<Position> _getPosition() async {
+
+class _HomeVieuState extends State<HomeVieu> {
+  @override
+  void initState() {
+    showWeather();
+    SizedBox();
+    super.initState();
+  }
+
+  Future<void> showWeather() async {
+    final position = await getPosition();
+    log('Position latitude ===> ${position.latitude}');
+    log('Position longitude ===> ${position.longitude}');
+  }
+
+  Future<Position> getPosition() async {
     bool serviceEnabled;
     LocationPermission permission;
-
-    // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
       return Future.error('Location services are disabled.');
     }
 
@@ -28,29 +40,17 @@ class _SearchViewState extends State<SearchView> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
         return Future.error('Location permissions are denied');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
-
-    // When we reach here, permissions are granted and we can
-    // continue accessing the position of the device.
     return await Geolocator.getCurrentPosition();
   }
 
-class _homeVieuState extends State<homeVieu> {
-  @override
-  
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -60,7 +60,7 @@ class _homeVieuState extends State<homeVieu> {
         leading: IconButton(
             onPressed: () {},
             icon: Icon(
-              Icons.location_on,
+              Icons.location_city,
               size: 40,
             )),
         actions: [
@@ -74,13 +74,11 @@ class _homeVieuState extends State<homeVieu> {
                 );
               },
               icon: Icon(
-                Icons.map_sharp,
+                Icons.map,
                 size: 40,
               ))
         ],
       ),
-
-
       body: Container(
           width: double.infinity,
           height: double.infinity,
@@ -98,6 +96,7 @@ class _homeVieuState extends State<homeVieu> {
                   style: TextStyle(fontSize: 50, color: Colors.white),
                 ),
               ),
+
               Positioned(
                 left: 135,
                 bottom: 700,
